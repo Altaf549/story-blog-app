@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.altaf.storyblog.ui.home.HomeFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.altaf.storyblog.ui.category.CategoryFragment"
+        android:label="Category" />
+
+    <fragment
+        android:id="@+id/storyFragment"
+        android:name="com.altaf.storyblog.ui.story.StoryFragment"
+        android:label="Story" />
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.altaf.storyblog.ui.setting.SettingFragment"
+        android:label="Setting" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.altaf.storyblog.ui.profile.ProfileFragment"
+        android:label="Profile" />
+
+</navigation>
+
+

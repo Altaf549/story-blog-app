@@ -2,9 +2,9 @@ package com.altaf.storyblog.ui.category
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.altaf.storyblog.R
 import com.altaf.storyblog.common.base.BaseFragment
 import com.altaf.storyblog.databinding.FragmentCategoryBinding
+import com.altaf.storyblog.ui.category.viewmodel.CategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

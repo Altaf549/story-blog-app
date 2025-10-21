@@ -58,6 +58,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     // Hilt DI
+    
+    // Gson
+    implementation(libs.gson)
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
     // Networking
@@ -65,8 +68,8 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit)
     // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

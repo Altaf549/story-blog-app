@@ -1,8 +1,6 @@
-package com.altaf.storyblog.ui.story
+package com.altaf.storyblog.ui.story.viewmodel
 
 import com.altaf.storyblog.common.base.BaseViewModel
-import com.altaf.storyblog.ui.story.viewmodel.StoryData
-import com.altaf.storyblog.ui.story.viewmodel.StoryEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

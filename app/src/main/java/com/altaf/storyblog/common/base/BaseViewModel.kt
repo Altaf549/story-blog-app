@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
  * 1. dataItem - for state/data updates
  * 2. eventItem - for one-time events like toast, navigation, etc.
  */
-open class BaseViewModel<Data, Event> : ViewModel() {
+abstract class BaseViewModel<Data, Event> : ViewModel() {
 
     // Data type LiveData
     protected val _dataItem = MutableLiveData<Data>()

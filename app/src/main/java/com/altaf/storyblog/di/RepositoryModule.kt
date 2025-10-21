@@ -1,11 +1,21 @@
 package com.altaf.storyblog.di
 
+import com.altaf.storyblog.data.repository.HomeRepositoryImpl
+import com.altaf.storyblog.domain.mapper.HomeDataMapper
+import com.altaf.storyblog.domain.repository.HomeRepository
+import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule
+abstract class RepositoryModule {
 
-
+    @Binds
+    @Singleton
+    abstract fun bindHomeRepository(
+        homeRepositoryImpl: HomeRepositoryImpl
+    ): HomeRepository
+}

@@ -1,6 +1,7 @@
 package com.altaf.storyblog.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.altaf.storyblog.common.base.BaseFragment
 import com.altaf.storyblog.databinding.FragmentHomeBinding
 import com.altaf.storyblog.ui.home.adapter.BannerAdapter
+import com.altaf.storyblog.ui.home.adapter.CategoryAdapter
 import com.altaf.storyblog.ui.home.viewmodel.HomeState
 import com.altaf.storyblog.ui.home.viewmodel.HomeViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -20,6 +23,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private lateinit var bannerAdapter: BannerAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun getViewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
@@ -33,6 +37,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = homeViewModel
         setupBannerSlider()
+        setupCategories()
         observeViewModel()
     }
 
@@ -61,31 +66,75 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }.attach()
     }
 
+    private fun setupCategories() {
+        categoryAdapter = CategoryAdapter()
+        binding.rvCategories.apply {
+            adapter = categoryAdapter
+            setHasFixedSize(true)
+        }
+
+        // Handle category item click
+        categoryAdapter.onItemClick = { category ->
+            // Handle category click
+            // You can navigate to a category detail screen or filter stories by category
+            showMessage("Selected category: ${category.name}")
+        }
+
+        // Handle see all click
+        binding.tvSeeAll.setOnClickListener {
+            // Handle see all categories click
+            showMessage("See all categories clicked")
+            // You can navigate to a full categories list screen
+        }
+    }
+
     private fun observeViewModel() {
         lifecycleScope.launch {
             homeViewModel.uiState.collect { state ->
                 when (state) {
                     is HomeState.Success -> {
-                        val banners = state.homeData.banners
+                        val homeData = state.homeData
+                        
+                        // Update banners
+                        val banners = homeData.banners
                         if (banners.isNotEmpty()) {
                             bannerAdapter.submitList(banners)
                             binding.bannerContainer.visibility = View.VISIBLE
                         } else {
                             binding.bannerContainer.visibility = View.GONE
                         }
+                        
+                        // Update categories
+                        homeData.categories.let { categories ->
+                            if (categories.isNotEmpty()) {
+                                categoryAdapter.submitList(categories)
+                                binding.categoriesCard.visibility = View.VISIBLE
+                            } else {
+                                binding.categoriesCard.visibility = View.GONE
+                            }
+                        }
                     }
                     is HomeState.Error -> {
                         // Handle error
                         binding.bannerContainer.visibility = View.GONE
+                        binding.categoriesCard.visibility = View.GONE
+                        showMessage(state.message)
                     }
                     is HomeState.Loading -> {
                         // Show loading state if needed
                     }
                     is HomeState.Empty -> {
                         binding.bannerContainer.visibility = View.GONE
+                        binding.categoriesCard.visibility = View.GONE
                     }
                 }
             }
+        }
+    }
+    
+    private fun showMessage(message: String) {
+        view?.let {
+            Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
         }
     }
 }

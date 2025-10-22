@@ -48,9 +48,58 @@
                     android:background="@color/transparent"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
+                    app:tabSelectedTextColor="@color/white"
                     app:tabPaddingEnd="@dimen/_3sdp"
                     app:tabPaddingStart="@dimen/_3sdp"
                     app:tabRippleColor="@null" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Categories Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/categoriesCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bannerContainer">
+
+                <TextView
+                    android:id="@+id/tvCategoriesTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/categories"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvSeeAll"
+                    style="@style/TextAppearance.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/see_all"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="@id/tvCategoriesTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvCategoriesTitle" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/tvCategoriesTitle"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/item_category" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

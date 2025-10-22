@@ -1,9 +1,11 @@
 package com.altaf.storyblog.di
 
 import com.altaf.storyblog.domain.mapper.HomeDataMapper
+import com.altaf.storyblog.domain.mapper.HomeDataMapperImpl
 import com.altaf.storyblog.domain.repository.HomeRepository
 import com.altaf.storyblog.domain.usecase.home.GetHomeDataUseCase
 import com.altaf.storyblog.domain.usecase.home.GetHomeDataUseCaseImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,9 +16,18 @@ import javax.inject.Singleton
 @ExperimentalCoroutinesApi
 @InstallIn(SingletonComponent::class)
 @Module
-class UseCaseModule {
+abstract class UseCaseModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideGetHomeDataUseCase(homeRepository: HomeRepository, mapper: HomeDataMapper): GetHomeDataUseCase = GetHomeDataUseCaseImpl(homeRepository, mapper)
+    abstract fun bindHomeDataMapper(impl: HomeDataMapperImpl): HomeDataMapper
+    
+    companion object {
+        @Provides
+        @Singleton
+        fun provideGetHomeDataUseCase(
+            homeRepository: HomeRepository, 
+            mapper: HomeDataMapper
+        ): GetHomeDataUseCase = GetHomeDataUseCaseImpl(homeRepository, mapper)
+    }
 }

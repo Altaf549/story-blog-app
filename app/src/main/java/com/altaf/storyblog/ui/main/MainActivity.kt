@@ -1,16 +1,17 @@
 package com.altaf.storyblog.ui.main
 
-import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.altaf.storyblog.R
 import com.altaf.storyblog.common.base.BaseActivity
 import com.altaf.storyblog.databinding.ActivityMainBinding
 import com.altaf.storyblog.ui.main.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun getLayoutId(): Int = R.layout.activity_main
@@ -19,14 +20,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun setupUI() {
         enableEdgeToEdge()
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        
+        // Initialize NavController after the view is created
+        binding.main.post {
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+            val navController = navHostFragment?.navController ?: return@post
+            binding.bottomNav.setupWithNavController(navController)
         }
-
-        val navController = findNavController(R.id.nav_host_fragment)
-        binding.bottomNav.setupWithNavController(navController)
     }
 }

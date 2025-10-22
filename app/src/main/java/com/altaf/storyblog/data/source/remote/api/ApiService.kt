@@ -4,6 +4,6 @@ import com.altaf.storyblog.data.source.remote.dto.HomeResponseDto
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("api/home")
+    @GET("home")
     suspend fun getHomeData(): HomeResponseDto
 }

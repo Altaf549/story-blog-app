@@ -1,5 +1,6 @@
 package com.altaf.storyblog.data.source.remote.dto
 
+import com.altaf.storyblog.BuildConfig
 import com.altaf.storyblog.domain.model.Category
 import com.google.gson.annotations.SerializedName
 
@@ -28,7 +29,7 @@ data class CategoryDto(
             name = name,
             slug = slug,
             description = description ?: "",
-            imageUrl = imageUrl ?: ""
+            imageUrl = (BuildConfig.IMAGE_URL + imageUrl)
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.altaf.storyblog.data.source.remote.dto
 
+import com.altaf.storyblog.BuildConfig
 import com.altaf.storyblog.domain.model.Banner
 import com.google.gson.annotations.SerializedName
 
@@ -26,7 +27,7 @@ data class BannerDto(
         return Banner(
             id = id,
             title = title,
-            imageUrl = imageUrl,
+            imageUrl = BuildConfig.IMAGE_URL + imageUrl,
             linkUrl = linkUrl,
             position = position
         )

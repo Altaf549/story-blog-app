@@ -1,5 +1,6 @@
 package com.altaf.storyblog.data.source.remote.dto
 
+import com.altaf.storyblog.BuildConfig
 import com.altaf.storyblog.domain.model.Story
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
@@ -38,7 +39,7 @@ data class StoryDto(
             id = id,
             title = title,
             content = content,
-            bannerImageUrl = bannerImageUrl,
+            bannerImageUrl = BuildConfig.IMAGE_URL + bannerImageUrl,
             user = user.toUser(),
             category = category.toCategory(),
             createdAt = dateFormat.parse(createdAt) ?: Date()

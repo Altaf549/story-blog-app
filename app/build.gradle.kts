@@ -19,7 +19,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://mole-maximum-fawn.ngrok-free.app/\"")
+        buildConfigField("String", "IMAGE_URL", "\"https://mole-maximum-fawn.ngrok-free.app\"")
+        buildConfigField("String", "BASE_URL", "\"https://mole-maximum-fawn.ngrok-free.app/api/\"")
     }
 
     buildTypes {
@@ -71,6 +72,10 @@ dependencies {
     // Navigation
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+    
+    // SDP - Scalable DP and SSP - Scalable SP
+    implementation(libs.intuit.sdp)
+    implementation(libs.intuit.ssp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

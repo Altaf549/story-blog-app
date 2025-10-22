@@ -1,9 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.StoryBlogApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Action Bar color -->
+        <item name="colorPrimary">@color/colorActionBar</item>
+        <item name="android:statusBarColor">@color/colorActionBar</item>
+        
+        <!-- Navigation Bar color -->
+        <item name="android:navigationBarColor">@color/colorNavigationBar</item>
+        
+        <!-- Bottom Navigation color -->
+        <item name="colorSurface">@color/colorBottomNavigation</item>
+        <item name="colorOnSurface">@color/white</item>
+        
+        <!-- Text colors for better visibility -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
     </style>
 
     <style name="Theme.StoryBlogApp" parent="Base.Theme.StoryBlogApp" />
+    
+    <!-- Style for Bottom Navigation -->
+    <style name="Widget.StoryBlogApp.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconTint">@drawable/bottom_nav_color_selector</item>
+        <item name="itemTextColor">@drawable/bottom_nav_color_selector</item>
+        <item name="android:background">@color/colorBottomNavigation</item>
+    </style>
 </resources>

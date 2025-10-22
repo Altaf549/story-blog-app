@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Custom colors -->
+    <color name="colorActionBar">#FFa11d54</color>
+    <color name="colorNavigationBar">#FF6e1339</color>
+    <color name="colorBottomNavigation">#f7c1d1</color>
 </resources>

@@ -1,10 +1,9 @@
 package com.altaf.storyblog.data.source.remote.api
 
 import com.altaf.storyblog.data.source.remote.dto.HomeResponseDto
-import com.altaf.storyblog.domain.model.networkModel.NetworkResult
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("/api/home")
-    suspend fun getHomeData(): NetworkResult<HomeResponseDto>
+    @GET("api/home")
+    suspend fun getHomeData(): HomeResponseDto
 }

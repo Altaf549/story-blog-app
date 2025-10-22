@@ -1,5 +1,6 @@
 package com.altaf.storyblog.domain.usecase.home
 
+import android.util.Log
 import com.altaf.storyblog.domain.mapper.HomeDataMapper
 import com.altaf.storyblog.domain.model.HomeData
 import com.altaf.storyblog.domain.model.networkModel.NetworkResult
@@ -13,14 +14,18 @@ class GetHomeDataUseCaseImpl @Inject constructor(
 
     override suspend fun invoke(): NetworkResult<HomeData> {
         try {
-            val data = repository.getHomeData().data
-            return if(data != null) {
-                NetworkResult.Success(mapper.mapToDomain(data), "Success")
+            val result = repository.getHomeData()
+            return if (result.data != null) {
+                val mappedData = mapper.mapToDomain(result.data)
+                NetworkResult.Success(mappedData, "Success")
             } else {
-                NetworkResult.Error(repository.getHomeData().message ?: "Server Error")
+                val errorMsg = result.message ?: "Server Error"
+                NetworkResult.Error(errorMsg)
             }
         } catch (e: Exception) {
-            return NetworkResult.Error(e.message ?: "Server Error")
+            val errorMsg = e.message ?: "Unknown error occurred"
+            e.printStackTrace()
+            return NetworkResult.Error(errorMsg)
         }
     }
 }

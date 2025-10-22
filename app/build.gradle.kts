@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+    implementation(libs.retrofit.converter.gson)
     // Networking
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)

@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName
 
 data class HomeResponseDto(
     @SerializedName("banners")
-    val banners: List<BannerDto>,
+    val banners: MutableList<BannerDto>,
     
     @SerializedName("categories")
-    val categories: List<CategoryDto>,
+    val categories: MutableList<CategoryDto>,
     
     @SerializedName("stories")
     val stories: List<StoryDto>

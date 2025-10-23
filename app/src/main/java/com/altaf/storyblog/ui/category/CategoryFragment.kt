@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.altaf.storyblog.R
 import com.altaf.storyblog.common.base.BaseFragment
 import com.altaf.storyblog.databinding.FragmentCategoryBinding
+import com.altaf.storyblog.domain.model.Category
 import com.altaf.storyblog.ui.adapter.CategoryAdapter
 import com.altaf.storyblog.ui.category.viewmodel.CategoryEvent
 import com.altaf.storyblog.ui.category.viewmodel.CategoryState
@@ -49,7 +50,7 @@ class CategoryFragment : BaseFragment<CategoryViewModel, FragmentCategoryBinding
 
         // Handle category item click
         categoryAdapter.onItemClick = { category ->
-            viewModel.onCategoriesClicked()
+            viewModel.onCategoriesClicked(category)
         }
     }
 
@@ -57,18 +58,23 @@ class CategoryFragment : BaseFragment<CategoryViewModel, FragmentCategoryBinding
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiEvent.collect { event ->
                 when (event) {
-                    is CategoryEvent.NavigateToCategoryWiseStory -> navigateToCategoryWiseStory()
+                    is CategoryEvent.NavigateToCategoryWiseStory -> navigateToCategoryWiseStory(event.category)
                     else -> {}
                 }
             }
         }
     }
 
-    private fun navigateToCategoryWiseStory() {
+    private fun navigateToCategoryWiseStory(category: Category) {
+        val bundle = Bundle().apply {
+            putLong("category_id", category.id)
+            putString("category_name", category.name)
+            putString("category_slug", category.slug)
+        }
         // Navigate to category wise story with proper back stack handling
         findNavController().navigate(
             R.id.categoryWiseStoryFragment,
-            null,
+            bundle,
             NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)

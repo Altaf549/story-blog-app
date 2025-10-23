@@ -1,11 +1,9 @@
 package com.altaf.storyblog.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.NavOptions
@@ -14,6 +12,7 @@ import com.altaf.storyblog.common.base.BaseFragment
 import com.altaf.storyblog.common.extension.gone
 import com.altaf.storyblog.common.extension.visible
 import com.altaf.storyblog.databinding.FragmentHomeBinding
+import com.altaf.storyblog.domain.model.Category
 import com.altaf.storyblog.ui.home.adapter.BannerAdapter
 import com.altaf.storyblog.ui.adapter.CategoryAdapter
 import com.altaf.storyblog.ui.adapter.StoryAdapter
@@ -58,7 +57,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiEvent.collect { event ->
                 when (event) {
-                    is HomeEvent.NavigateToCategoryWiseStory -> navigateToCategoryWiseStory()
+                    is HomeEvent.NavigateToCategoryWiseStory -> navigateToCategoryWiseStory(category = event.category)
                     is HomeEvent.NavigateToCategory -> navigateToCategory()
                     is HomeEvent.NavigateToSingleStory -> navigateToSingleStory()
                     is HomeEvent.NavigateToStory -> navigateToStory()
@@ -83,11 +82,18 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         )
     }
     
-    private fun navigateToCategoryWiseStory() {
-        // Navigate to category wise story with proper back stack handling
+    private fun navigateToCategoryWiseStory(category: Category) {
+        // Create a bundle with the category data
+        val bundle = Bundle().apply {
+            putLong("category_id", category.id)
+            putString("category_name", category.name)
+            putString("category_slug", category.slug)
+        }
+        
+        // Navigate to category wise story with category data and proper back stack handling
         findNavController().navigate(
             R.id.categoryWiseStoryFragment,
-            null,
+            bundle,
             NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
@@ -162,7 +168,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         // Handle category item click
         categoryAdapter.onItemClick = { category ->
-            viewModel.onCategoriesClicked()
+            viewModel.onCategoriesClicked(category)
         }
     }
 

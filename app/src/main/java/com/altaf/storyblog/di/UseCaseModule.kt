@@ -11,6 +11,8 @@ import com.altaf.storyblog.domain.usecase.category.GetCategoriesUseCase
 import com.altaf.storyblog.domain.usecase.category.GetCategoriesUseCaseImpl
 import com.altaf.storyblog.domain.usecase.home.GetHomeDataUseCase
 import com.altaf.storyblog.domain.usecase.home.GetHomeDataUseCaseImpl
+import com.altaf.storyblog.domain.usecase.story.GetStoriesByCategoryUseCase
+import com.altaf.storyblog.domain.usecase.story.GetStoriesByCategoryUseCaseImpl
 import com.altaf.storyblog.domain.usecase.story.GetStoriesUseCase
 import com.altaf.storyblog.domain.usecase.story.GetStoriesUseCaseImpl
 import dagger.Binds
@@ -47,5 +49,12 @@ abstract class UseCaseModule {
             storyRepository: StoryRepository,
             storyMapper: StoryMapper
         ): GetStoriesUseCase = GetStoriesUseCaseImpl(storyRepository, storyMapper)
+
+        @Provides
+        @Singleton
+        fun provideGetStoriesByCategoryUseCase(
+            storyRepository: StoryRepository,
+            storyMapper: StoryMapper
+        ): GetStoriesByCategoryUseCase = GetStoriesByCategoryUseCaseImpl(storyRepository, storyMapper)
     }
 }

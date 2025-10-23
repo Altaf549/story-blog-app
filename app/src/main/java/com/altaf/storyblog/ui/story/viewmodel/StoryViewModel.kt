@@ -22,10 +22,7 @@ private const val PAGE_SIZE = 15
 @HiltViewModel
 class StoryViewModel @Inject constructor(
     private val getStoriesUseCase: GetStoriesUseCase
-) : BaseViewModel<StoryEvent, Unit>() {
-
-    private var currentPage = 1
-    private var isLastPage = false
+) : BaseViewModel<StoryEvent, StoryState>() {
 
     // Expose the paging data as a Flow
     val storiesFlow: Flow<PagingData<Story>> = Pager(

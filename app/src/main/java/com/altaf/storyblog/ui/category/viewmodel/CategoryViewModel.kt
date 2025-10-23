@@ -49,8 +49,8 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    fun onCategoriesClicked() {
-        _uiEvent.value = CategoryEvent.NavigateToCategoryWiseStory
+    fun onCategoriesClicked(category: Category) {
+        _uiEvent.value = CategoryEvent.NavigateToCategoryWiseStory(category)
     }
 
     fun clearEvent() {

@@ -2,6 +2,7 @@ package com.altaf.storyblog.ui.home.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.altaf.storyblog.common.base.BaseViewModel
+import com.altaf.storyblog.domain.model.Category
 import com.altaf.storyblog.domain.model.HomeData
 import com.altaf.storyblog.domain.model.networkModel.NetworkResult
 import com.altaf.storyblog.domain.usecase.home.GetHomeDataUseCase
@@ -49,8 +50,8 @@ class HomeViewModel @Inject constructor(
         _uiEvent.value = HomeEvent.NavigateToCategory
     }
 
-    fun onCategoriesClicked() {
-        _uiEvent.value = HomeEvent.NavigateToCategoryWiseStory
+    fun onCategoriesClicked(category: Category) {
+        _uiEvent.value = HomeEvent.NavigateToCategoryWiseStory(category)
     }
 
     fun onStoryClicked() {

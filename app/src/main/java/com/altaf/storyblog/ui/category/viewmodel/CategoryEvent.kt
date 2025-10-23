@@ -7,5 +7,5 @@ import com.altaf.storyblog.domain.model.Category
  */
 sealed class CategoryEvent {
     object Empty : CategoryEvent()
-    object NavigateToCategoryWiseStory : CategoryEvent()
+    data class NavigateToCategoryWiseStory(val category: Category) : CategoryEvent()
 }

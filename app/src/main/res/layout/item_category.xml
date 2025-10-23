@@ -12,6 +12,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_6sdp"
         android:layout_marginEnd="@dimen/_6sdp"
         android:layout_marginVertical="@dimen/_3sdp"
         app:cardCornerRadius="@dimen/_6sdp"
@@ -24,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/categoryImage"
-                android:layout_width="@dimen/_75sdp"
-                android:layout_height="@dimen/_75sdp"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="@dimen/_85sdp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

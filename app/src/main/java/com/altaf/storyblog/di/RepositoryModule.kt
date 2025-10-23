@@ -1,7 +1,9 @@
 package com.altaf.storyblog.di
 
+import com.altaf.storyblog.data.repository.CategoryRepositoryImpl
 import com.altaf.storyblog.data.repository.HomeRepositoryImpl
 import com.altaf.storyblog.domain.mapper.HomeDataMapper
+import com.altaf.storyblog.domain.repository.CategoryRepository
 import com.altaf.storyblog.domain.repository.HomeRepository
 import dagger.Binds
 import dagger.Module
@@ -18,4 +20,10 @@ abstract class RepositoryModule {
     abstract fun bindHomeRepository(
         homeRepositoryImpl: HomeRepositoryImpl
     ): HomeRepository
+    
+    @Binds
+    @Singleton
+    abstract fun bindCategoryRepository(
+        categoryRepositoryImpl: CategoryRepositoryImpl
+    ): CategoryRepository
 }

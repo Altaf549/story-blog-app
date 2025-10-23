@@ -31,7 +31,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private lateinit var bannerAdapter: BannerAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var storyAdapter: StoryAdapter
-    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun getViewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
 
@@ -42,7 +41,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = homeViewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         setupBannerSlider()
         setupCategories()
@@ -57,7 +56,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     
     private fun observeEvents() {
         viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.uiEvent.collect { event ->
+            viewModel.uiEvent.collect { event ->
                 when (event) {
                     is HomeEvent.NavigateToCategoryWiseStory -> navigateToCategoryWiseStory()
                     is HomeEvent.NavigateToCategory -> navigateToCategory()
@@ -163,7 +162,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         // Handle category item click
         categoryAdapter.onItemClick = { category ->
-            homeViewModel.onCategoriesClicked()
+            viewModel.onCategoriesClicked()
         }
     }
 
@@ -178,18 +177,18 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
         // Handle story item clicks
         storyAdapter.onItemClick = { story ->
-            homeViewModel.onStoryClicked()
+            viewModel.onStoryClicked()
         }
 
         storyAdapter.onReadMoreClick = { story ->
-            homeViewModel.onStoryClicked()
+            viewModel.onStoryClicked()
         }
     }
 
     private fun observeViewModel() {
         // Observe UI state
         lifecycleScope.launch {
-            homeViewModel.uiState.collect { state ->
+            viewModel.uiState.collect { state ->
                 when (state) {
                     is HomeState.Success -> {
                         val homeData = state.homeData
@@ -254,7 +253,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        homeViewModel.clearEvent()
+        viewModel.clearEvent()
     }
 }
 

@@ -1,10 +1,9 @@
-package com.altaf.storyblog.data.source.remote.api
+package com.altaf.storyblog.domain.repository
 
 import com.altaf.storyblog.data.source.remote.dto.CategoriesResponseDto
-import com.altaf.storyblog.data.source.remote.dto.HomeResponseDto
+import com.altaf.storyblog.domain.model.Category
 import com.altaf.storyblog.domain.model.networkModel.NetworkResult
 
-interface DataSource {
-    suspend fun getHomeData(): NetworkResult<HomeResponseDto>
+interface CategoryRepository {
     suspend fun getCategories(): NetworkResult<CategoriesResponseDto>
 }

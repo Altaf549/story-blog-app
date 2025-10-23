@@ -95,8 +95,6 @@
                     android:layout_marginTop="12dp"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/tvCategoriesTitle"
                     tools:itemCount="5"

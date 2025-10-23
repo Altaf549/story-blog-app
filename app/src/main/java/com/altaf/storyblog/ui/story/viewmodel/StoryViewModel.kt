@@ -1,70 +1,48 @@
 package com.altaf.storyblog.ui.story.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.altaf.storyblog.common.base.BaseViewModel
-import com.altaf.storyblog.domain.model.networkModel.NetworkResult
+import com.altaf.storyblog.data.paging.StoryPagingSource
+import com.altaf.storyblog.domain.model.Story
 import com.altaf.storyblog.domain.usecase.story.GetStoriesUseCase
-import com.altaf.storyblog.ui.category.viewmodel.CategoryEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class StoryViewModel @Inject constructor(private val getStoriesUseCase: GetStoriesUseCase) : BaseViewModel<StoryState, StoryEvent>() {
+private const val PAGE_SIZE = 15
 
-    private val _uiState = MutableStateFlow<StoryState>(StoryState.Loading)
-    val uiState: StateFlow<StoryState> = _uiState.asStateFlow()
+@HiltViewModel
+class StoryViewModel @Inject constructor(
+    private val getStoriesUseCase: GetStoriesUseCase
+) : BaseViewModel<StoryEvent, Unit>() {
+
+    private var currentPage = 1
+    private var isLastPage = false
+
+    // Expose the paging data as a Flow
+    val storiesFlow: Flow<PagingData<Story>> = Pager(
+        config = PagingConfig(
+            pageSize = PAGE_SIZE,
+            enablePlaceholders = false,
+            initialLoadSize = PAGE_SIZE
+        ),
+        pagingSourceFactory = {
+            StoryPagingSource(
+                getStoriesUseCase = getStoriesUseCase
+            )
+        }
+    ).flow.cachedIn(viewModelScope)
 
     private val _uiEvent = MutableStateFlow<StoryEvent>(StoryEvent.Empty)
     val uiEvent: StateFlow<StoryEvent> = _uiEvent.asStateFlow()
-
-    private var currentPage = 1
-    private val pageSize = 15
-    private var isLastPage = false
-    private var isLoading = false
-
-    init {
-        loadStories()
-    }
-
-    fun loadStories() {
-        if (isLoading || isLastPage) return
-        
-        viewModelScope.launch {
-            isLoading = true
-            _uiState.update { StoryState.Loading }
-            
-            when (val result = getStoriesUseCase(currentPage, pageSize)) {
-                is NetworkResult.Success -> {
-                    val stories = result.data ?: emptyList()
-                    _uiState.update {
-                        if (stories.isEmpty()) {
-                            isLastPage = true
-                            StoryState.Empty
-                        } else {
-                            currentPage++
-                            StoryState.Success(stories.toMutableList())
-                        }
-                    }
-                }
-                is NetworkResult.Error -> {
-                    _uiState.update { StoryState.Error(result.message ?: "Unknown error") }
-                }
-            }
-            
-            isLoading = false
-        }
-    }
-    
-    fun refresh() {
-        currentPage = 1
-        isLastPage = false
-        loadStories()
-    }
 
     fun onStoryClicked() {
         _uiEvent.value = StoryEvent.NavigateToSingleStory
@@ -74,5 +52,3 @@ class StoryViewModel @Inject constructor(private val getStoriesUseCase: GetStori
         _uiEvent.value = StoryEvent.Empty
     }
 }
-
-

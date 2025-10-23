@@ -19,6 +19,7 @@ gson = "2.13.2"
 navigation = "2.9.5"
 sdp = "1.1.0"
 ssp = "1.1.0"
+paging = "3.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,10 @@ navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fr
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 intuit-sdp = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdp" }
 intuit-ssp = { group = "com.intuit.ssp", name = "ssp-android", version.ref = "ssp" }
+
+# Paging 3
+androidx-paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
+androidx-paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

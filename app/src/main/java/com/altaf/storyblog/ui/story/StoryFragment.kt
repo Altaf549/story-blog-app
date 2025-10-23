@@ -8,14 +8,16 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.altaf.storyblog.R
 import com.altaf.storyblog.common.base.BaseFragment
 import com.altaf.storyblog.databinding.FragmentStoryBinding
-import com.altaf.storyblog.ui.adapter.StoryAdapter
-import com.altaf.storyblog.ui.category.viewmodel.CategoryEvent
+import com.altaf.storyblog.domain.model.Story
+import com.altaf.storyblog.ui.adapter.StoryLoadStateAdapter
+import com.altaf.storyblog.ui.adapter.StoryPagingAdapter
 import com.altaf.storyblog.ui.story.viewmodel.StoryEvent
-import com.altaf.storyblog.ui.story.viewmodel.StoryState
 import com.altaf.storyblog.ui.story.viewmodel.StoryViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +27,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class StoryFragment : BaseFragment<StoryViewModel, FragmentStoryBinding>() {
 
-    private lateinit var storyAdapter: StoryAdapter
+    private lateinit var storyAdapter: StoryPagingAdapter
 
     override fun getViewModelClass(): Class<StoryViewModel> = StoryViewModel::class.java
 
@@ -69,13 +71,17 @@ class StoryFragment : BaseFragment<StoryViewModel, FragmentStoryBinding>() {
     }
 
     private fun setupStories() {
-        storyAdapter = StoryAdapter()
+        storyAdapter = StoryPagingAdapter()
 
         // Initialize RecyclerView
         binding.rvStories.apply {
-            adapter = storyAdapter
+            adapter = storyAdapter.withLoadStateFooter(
+                footer = StoryLoadStateAdapter { storyAdapter.retry() }
+            )
+            layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
+
         // Handle story item clicks
         storyAdapter.onItemClick = { story ->
             viewModel.onStoryClicked()
@@ -84,29 +90,34 @@ class StoryFragment : BaseFragment<StoryViewModel, FragmentStoryBinding>() {
         storyAdapter.onReadMoreClick = { story ->
             viewModel.onStoryClicked()
         }
+
+        // Observe load state for showing loading and error states
+        storyAdapter.addLoadStateListener { loadState ->
+            binding.apply {
+                // Show loading indicator for initial load
+                progressBar.isVisible = loadState.refresh is LoadState.Loading
+
+                
+                // Show empty state if there are no items and no error
+                val isEmpty = loadState.refresh is LoadState.NotLoading && storyAdapter.itemCount == 0
+                tvEmptyState.isVisible = isEmpty
+                
+                if (loadState.refresh is LoadState.NotLoading && 
+                    loadState.append.endOfPaginationReached && 
+                    storyAdapter.itemCount == 0) {
+                    tvEmptyState.visibility = View.VISIBLE
+                } else {
+                    tvEmptyState.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                when (state) {
-                    is StoryState.Loading -> {
-                        binding.tvEmptyState.isVisible = false
-                    }
-                    is StoryState.Success -> {
-                        binding.progressBar.isVisible = false
-                        binding.tvEmptyState.isVisible = state.stories.isEmpty()
-                        storyAdapter.submitList(state.stories)
-                    }
-                    is StoryState.Error -> {
-                        binding.progressBar.isVisible = false
-                        showErrorMessage(state.message)
-                    }
-                    is StoryState.Empty -> {
-                        binding.progressBar.isVisible = false
-                        binding.tvEmptyState.isVisible = true
-                    }
-                }
+            // Collect the paging data
+            viewModel.storiesFlow.collectLatest { pagingData ->
+                storyAdapter.submitData(pagingData)
             }
         }
     }
@@ -116,7 +127,7 @@ class StoryFragment : BaseFragment<StoryViewModel, FragmentStoryBinding>() {
             Snackbar.make(it, message, Snackbar.LENGTH_LONG).show()
         }
     }
-
+    
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.clearEvent()

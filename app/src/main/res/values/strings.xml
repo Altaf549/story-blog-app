@@ -12,4 +12,8 @@
     <string name="read_more">Read More</string>
     <string name="no_categories_found">No Categories Found</string>
     <string name="no_stories_found">No Stories Found</string>
+    
+    <!-- New strings -->
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="retry">Retry</string>
 </resources>

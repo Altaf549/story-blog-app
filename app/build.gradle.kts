@@ -51,6 +51,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    
+    // Paging 3
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.common.ktx)
+    
+    // ViewModel KTX
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // Glide
     implementation(libs.glide)
     kapt(libs.glide.compiler)

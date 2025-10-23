@@ -1,4 +1,4 @@
-package com.altaf.storyblog.ui.home.adapter
+package com.altaf.storyblog.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

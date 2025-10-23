@@ -5,4 +5,6 @@ sealed class HomeEvent {
     object Empty : HomeEvent()
     object NavigateToCategoryWiseStory : HomeEvent()
     object NavigateToCategory : HomeEvent()
+    object NavigateToSingleStory: HomeEvent()
+    object NavigateToStory: HomeEvent()
 }

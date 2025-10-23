@@ -14,7 +14,8 @@ import com.altaf.storyblog.common.extension.gone
 import com.altaf.storyblog.common.extension.visible
 import com.altaf.storyblog.databinding.FragmentHomeBinding
 import com.altaf.storyblog.ui.home.adapter.BannerAdapter
-import com.altaf.storyblog.ui.home.adapter.CategoryAdapter
+import com.altaf.storyblog.ui.adapter.CategoryAdapter
+import com.altaf.storyblog.ui.adapter.StoryAdapter
 import com.altaf.storyblog.ui.home.viewmodel.HomeEvent
 import com.altaf.storyblog.ui.home.viewmodel.HomeState
 import com.altaf.storyblog.ui.home.viewmodel.HomeViewModel
@@ -28,6 +29,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private lateinit var bannerAdapter: BannerAdapter
     private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var storyAdapter: StoryAdapter
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun getViewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
@@ -43,6 +45,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         binding.lifecycleOwner = viewLifecycleOwner
         setupBannerSlider()
         setupCategories()
+        setupStories()
         observeViewModel()
     }
     
@@ -57,6 +60,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 when (event) {
                     is HomeEvent.NavigateToCategoryWiseStory -> navigateToCategoryWiseStory()
                     is HomeEvent.NavigateToCategory -> navigateToCategory()
+                    is HomeEvent.NavigateToSingleStory -> navigateToSingleStory()
+                    is HomeEvent.NavigateToStory -> navigateToStory()
                     else -> {}
                 }
             }
@@ -82,6 +87,36 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         // Navigate to category wise story with proper back stack handling
         findNavController().navigate(
             R.id.categoryWiseStoryFragment,
+            null,
+            NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
+                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
+                .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
+                .build()
+        )
+    }
+
+    private fun navigateToStory() {
+        // Navigate to category fragment with proper back stack handling
+        findNavController().navigate(
+            R.id.storyFragment,
+            null,
+            NavOptions.Builder()
+                .setPopUpTo(R.id.homeFragment, false) // Keep home in back stack
+                .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
+                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
+                .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
+                .build()
+        )
+    }
+
+    private fun navigateToSingleStory() {
+        // Navigate to category wise story with proper back stack handling
+        findNavController().navigate(
+            R.id.singleStoryFragment,
             null,
             NavOptions.Builder()
                 .setLaunchSingleTop(true)
@@ -131,6 +166,23 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
+    private fun setupStories() {
+        storyAdapter = StoryAdapter()
+        binding.rvStories.apply {
+            adapter = storyAdapter
+            setHasFixedSize(true)
+        }
+
+        // Handle story item clicks
+        storyAdapter.onItemClick = { story ->
+            homeViewModel.onStoryClicked()
+        }
+
+        storyAdapter.onReadMoreClick = { story ->
+            homeViewModel.onStoryClicked()
+        }
+    }
+
     private fun observeViewModel() {
         // Observe UI state
         lifecycleScope.launch {
@@ -155,6 +207,16 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                                 binding.categoriesCard.visible()
                             } else {
                                 binding.categoriesCard.gone()
+                            }
+                        }
+                        
+                        // Update stories
+                        homeData.stories.let { stories ->
+                            if (stories.isNotEmpty()) {
+                                storyAdapter.submitList(stories)
+                                binding.storiesCard.visible()
+                            } else {
+                                binding.storiesCard.gone()
                             }
                         }
                     }

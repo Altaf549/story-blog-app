@@ -8,4 +8,6 @@
     <string name="banner_image">Banner Image</string>
     <string name="categories">Categories</string>
     <string name="see_all">See All</string>
+    <string name="recent_stories">Recent Stories</string>
+    <string name="read_more">Read More</string>
 </resources>

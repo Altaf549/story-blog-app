@@ -33,6 +33,11 @@
         android:id="@+id/categoryWiseStoryFragment"
         android:name="com.altaf.storyblog.ui.categorywisestory.CategoryWiseStoryFragment"
         android:label="Stories by Category" />
+        
+    <fragment
+        android:id="@+id/singleStoryFragment"
+        android:name="com.altaf.storyblog.ui.singlestory.SingleStoryFragment"
+        android:label="Story Details"/>
 
 </navigation>
 

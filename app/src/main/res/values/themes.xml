@@ -23,4 +23,20 @@
         <item name="itemTextColor">@drawable/bottom_nav_color_selector</item>
         <item name="android:background">@color/colorBottomNavigation</item>
     </style>
+
+    <!-- Shape Appearance Style -->
+    <style name="ShapeAppearance.StoryBlog.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <!-- Text Button Style -->
+    <style name="Widget.StoryBlog.Button.TextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>

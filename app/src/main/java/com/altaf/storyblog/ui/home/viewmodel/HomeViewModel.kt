@@ -57,6 +57,14 @@ class HomeViewModel @Inject constructor(
         _uiEvent.value = HomeEvent.NavigateToCategoryWiseStory
     }
 
+    fun onStoryClicked() {
+        _uiEvent.value = HomeEvent.NavigateToSingleStory
+    }
+
+    fun onSeeAllStoriesClicked() {
+        _uiEvent.value = HomeEvent.NavigateToStory
+    }
+
     fun clearEvent() {
         _uiEvent.value = HomeEvent.Empty
     }

@@ -32,7 +32,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 binding.toolbar.toolbarTitle.text = destination.label
                 when (destination.id) {
                     R.id.homeFragment, R.id.categoryFragment, R.id.storyFragment, R.id.settingFragment, R.id.profileFragment-> binding.bottomNav.visible()
-                    R.id.categoryWiseStoryFragment -> binding.bottomNav.gone()
+                    R.id.categoryWiseStoryFragment, R.id.singleStoryFragment -> binding.bottomNav.gone()
                 }
             }
         }

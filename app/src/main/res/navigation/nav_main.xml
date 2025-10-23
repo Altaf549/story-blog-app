@@ -28,6 +28,11 @@
         android:id="@+id/profileFragment"
         android:name="com.altaf.storyblog.ui.profile.ProfileFragment"
         android:label="Profile" />
+        
+    <fragment
+        android:id="@+id/categoryWiseStoryFragment"
+        android:name="com.altaf.storyblog.ui.categorywisestory.CategoryWiseStoryFragment"
+        android:label="Stories by Category" />
 
 </navigation>
 

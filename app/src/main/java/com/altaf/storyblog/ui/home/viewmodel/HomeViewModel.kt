@@ -19,6 +19,9 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState: StateFlow<HomeState> = _uiState
 
+    private val _uiEvent = MutableStateFlow<HomeEvent>(HomeEvent.Empty)
+    val uiEvent: StateFlow<HomeEvent> = _uiEvent
+
     init {
         loadHomeData()
     }
@@ -44,5 +47,17 @@ class HomeViewModel @Inject constructor(
 
     fun onRetry() {
         loadHomeData()
+    }
+    
+    fun onSeeAllCategoriesClicked() {
+        _uiEvent.value = HomeEvent.NavigateToCategory
+    }
+
+    fun onCategoriesClicked() {
+        _uiEvent.value = HomeEvent.NavigateToCategoryWiseStory
+    }
+
+    fun clearEvent() {
+        _uiEvent.value = HomeEvent.Empty
     }
 }

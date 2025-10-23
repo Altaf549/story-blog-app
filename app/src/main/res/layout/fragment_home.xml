@@ -83,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/see_all"
                     android:textColor="@color/colorPrimary"
+                    android:onClick="@{() -> viewModel.onSeeAllCategoriesClicked()}"
                     app:layout_constraintBottom_toBottomOf="@id/tvCategoriesTitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tvCategoriesTitle" />

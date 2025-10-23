@@ -31,12 +31,8 @@ class HomeViewModel @Inject constructor(
             _uiState.value = HomeState.Loading
             when (val result = getHomeDataUseCase()) {
                 is NetworkResult.Success -> {
-                    val homeData = result.data
-                    _uiState.value = if (homeData?.stories?.isEmpty() == true && homeData.banners.isEmpty()) {
-                        HomeState.Empty
-                    } else {
-                        HomeState.Success(homeData ?: HomeData())
-                    }
+                    val homeData = result.data ?: HomeData()
+                    _uiState.value = HomeState.Success(homeData)
                 }
                 is NetworkResult.Error -> {
                     _uiState.value = HomeState.Error(result.message ?: "An unknown error occurred")

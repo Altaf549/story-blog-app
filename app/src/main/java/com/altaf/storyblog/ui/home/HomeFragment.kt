@@ -1,6 +1,7 @@
 package com.altaf.storyblog.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -167,12 +168,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun setupStories() {
+        Log.d("HomeFragment", "Setting up stories RecyclerView")
         storyAdapter = StoryAdapter()
+        
+        // Initialize RecyclerView
         binding.rvStories.apply {
             adapter = storyAdapter
             setHasFixedSize(true)
         }
-
         // Handle story item clicks
         storyAdapter.onItemClick = { story ->
             homeViewModel.onStoryClicked()
@@ -201,37 +204,42 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                         }
                         
                         // Update categories
-                        homeData.categories.let { categories ->
-                            if (categories.isNotEmpty()) {
-                                categoryAdapter.submitList(categories)
-                                binding.categoriesCard.visible()
-                            } else {
-                                binding.categoriesCard.gone()
-                            }
+                        val categories = homeData.categories
+                        if (categories.isNotEmpty()) {
+                            categoryAdapter.submitList(categories)
+                            binding.categoriesCard.visible()
+                        } else {
+                            binding.categoriesCard.gone()
                         }
                         
                         // Update stories
-                        homeData.stories.let { stories ->
-                            if (stories.isNotEmpty()) {
-                                storyAdapter.submitList(stories)
-                                binding.storiesCard.visible()
-                            } else {
-                                binding.storiesCard.gone()
+                        val stories = homeData.stories
+                        if (stories.isNotEmpty()) {
+                            binding.storiesCard.visible()
+                            storyAdapter.submitList(stories) {
+                                binding.rvStories.post {
+                                    binding.rvStories.invalidateItemDecorations()
+                                    binding.rvStories.requestLayout()
+                                }
                             }
+                        } else {
+                            binding.storiesCard.gone()
                         }
                     }
                     is HomeState.Error -> {
                         // Handle error
-                        binding.bannerContainer.visibility = View.GONE
-                        binding.categoriesCard.visibility = View.GONE
+                        binding.bannerContainer.gone()
+                        binding.categoriesCard.gone()
+                        binding.storiesCard.gone()
                         showMessage(state.message)
                     }
                     is HomeState.Loading -> {
                         // Show loading state if needed
                     }
                     is HomeState.Empty -> {
-                        binding.bannerContainer.visibility = View.GONE
-                        binding.categoriesCard.visibility = View.GONE
+                        binding.bannerContainer.gone()
+                        binding.categoriesCard.gone()
+                        binding.storiesCard.gone()
                     }
                 }
             }

@@ -167,7 +167,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun setupStories() {
-        Log.d("HomeFragment", "Setting up stories RecyclerView")
         storyAdapter = StoryAdapter()
         
         // Initialize RecyclerView

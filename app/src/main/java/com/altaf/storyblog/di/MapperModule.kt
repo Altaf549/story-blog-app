@@ -4,6 +4,8 @@ import com.altaf.storyblog.domain.mapper.CategoryMapper
 import com.altaf.storyblog.domain.mapper.CategoryMapperImpl
 import com.altaf.storyblog.domain.mapper.HomeDataMapper
 import com.altaf.storyblog.domain.mapper.HomeDataMapperImpl
+import com.altaf.storyblog.domain.mapper.StoryMapper
+import com.altaf.storyblog.domain.mapper.StoryMapperImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +23,8 @@ abstract class MapperModule {
     @Binds
     @Singleton
     abstract fun bindCategoryMapper(impl: CategoryMapperImpl): CategoryMapper
+
+    @Binds
+    @Singleton
+    abstract fun bindStoryMapper(impl: StoryMapperImpl): StoryMapper
 }

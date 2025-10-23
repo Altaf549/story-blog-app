@@ -3,6 +3,7 @@ package com.altaf.storyblog.data.source.remote.api
 import android.util.Log
 import com.altaf.storyblog.data.source.remote.dto.CategoriesResponseDto
 import com.altaf.storyblog.data.source.remote.dto.HomeResponseDto
+import com.altaf.storyblog.data.source.remote.dto.StoriesResponseDto
 import com.altaf.storyblog.domain.model.networkModel.NetworkResult
 
 class DataSourceImpl(
@@ -26,6 +27,19 @@ class DataSourceImpl(
         } catch (e: Exception) {
             e.printStackTrace()
             NetworkResult.Error("Failed to fetch categories: ${e.message}")
+        }
+    }
+
+    override suspend fun getStories(
+        page: Int,
+        perPage: Int
+    ): NetworkResult<StoriesResponseDto> {
+        return try {
+            val data = apiService.getStories(page, perPage)
+            NetworkResult.Success(data, "Stories fetched successfully")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            NetworkResult.Error("Failed to fetch stories: ${e.message}")
         }
     }
 }

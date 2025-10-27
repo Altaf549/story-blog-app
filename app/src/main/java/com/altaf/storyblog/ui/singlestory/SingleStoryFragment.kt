@@ -30,7 +30,7 @@ class SingleStoryFragment : BaseFragment<SingleStoryViewModel, FragmentSingleSto
         // Get story from arguments
         arguments?.getParcelable<Story>("story")?.let { 
             story = it
-            Log.d("TAG", "onViewCreated: ${story.toSimpleJson()}")
+            binding.storyData = story
         }
     }
 }

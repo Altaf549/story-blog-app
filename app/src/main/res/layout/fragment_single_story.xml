@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="storyData"
+            type="com.altaf.storyblog.domain.model.Story" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Story Banner Image -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivStoryBanner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.StoryBlog.MediumComponent"
+                app:imageUrl="@{storyData.bannerImageUrl}"
+                tools:src="@mipmap/ic_launcher" />
+
+            <!-- Story Title -->
+            <TextView
+                android:id="@+id/tvStoryTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="?android:attr/textColorPrimary"
+                android:text="@{storyData.title}"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivStoryBanner"
+                tools:text="This is a sample story title that can span multiple lines if needed" />
+
+            <!-- Story Content -->
+            <TextView
+                android:id="@+id/tvStoryContent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:lineSpacingExtra="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_18sdp"
+                app:textOther="@{storyData.content}"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStoryTitle"
+                tools:text="This is a sample story content that will be displayed here. The content can be long and will wrap to multiple lines.\n\nYou can include paragraphs, line breaks, and other formatting as needed. The text will automatically adjust to fit the screen width while maintaining proper spacing and readability." />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

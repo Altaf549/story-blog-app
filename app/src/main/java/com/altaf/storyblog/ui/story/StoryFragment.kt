@@ -48,18 +48,22 @@ class StoryFragment : BaseFragment<StoryViewModel, FragmentStoryBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiEvent.collect { event ->
                 when (event) {
-                    is StoryEvent.NavigateToSingleStory -> navigateToSingleStory()
+                    is StoryEvent.NavigateToSingleStory -> navigateToSingleStory(event.story)
                     else -> {}
                 }
             }
         }
     }
 
-    private fun navigateToSingleStory() {
+    private fun navigateToSingleStory(story: Story) {
+        // Create bundle with story data
+        val bundle = Bundle().apply {
+            putParcelable("story", story)
+        }
         // Navigate to category wise story with proper back stack handling
         findNavController().navigate(
             R.id.singleStoryFragment,
-            null,
+            bundle,
             NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
@@ -84,11 +88,11 @@ class StoryFragment : BaseFragment<StoryViewModel, FragmentStoryBinding>() {
 
         // Handle story item clicks
         storyAdapter.onItemClick = { story ->
-            viewModel.onStoryClicked()
+            viewModel.onStoryClicked(story)
         }
 
         storyAdapter.onReadMoreClick = { story ->
-            viewModel.onStoryClicked()
+            viewModel.onStoryClicked(story)
         }
 
         // Observe load state for showing loading and error states

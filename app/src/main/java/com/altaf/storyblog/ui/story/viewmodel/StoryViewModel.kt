@@ -41,8 +41,8 @@ class StoryViewModel @Inject constructor(
     private val _uiEvent = MutableStateFlow<StoryEvent>(StoryEvent.Empty)
     val uiEvent: StateFlow<StoryEvent> = _uiEvent.asStateFlow()
 
-    fun onStoryClicked() {
-        _uiEvent.value = StoryEvent.NavigateToSingleStory
+    fun onStoryClicked(story: Story) {
+        _uiEvent.value = StoryEvent.NavigateToSingleStory(story)
     }
 
     fun clearEvent() {

@@ -41,14 +41,14 @@ class CategoryWiseStoryViewModel @Inject constructor(
         }
     ).flow.cachedIn(viewModelScope)
 
-    private val _uiEvent = MutableStateFlow<StoryEvent>(StoryEvent.Empty)
-    val uiEvent: StateFlow<StoryEvent> = _uiEvent.asStateFlow()
+    private val _uiEvent = MutableStateFlow<CategoryWiseStoryEvent>(CategoryWiseStoryEvent.Empty)
+    val uiEvent: StateFlow<CategoryWiseStoryEvent> = _uiEvent.asStateFlow()
 
-    fun onStoryClicked() {
-        _uiEvent.value = StoryEvent.NavigateToSingleStory
+    fun onStoryClicked(story: Story) {
+        _uiEvent.value = CategoryWiseStoryEvent.NavigateToSingleStory(story)
     }
 
     fun clearEvent() {
-        _uiEvent.value = StoryEvent.Empty
+        _uiEvent.value = CategoryWiseStoryEvent.Empty
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.altaf.storyblog.common.base.BaseViewModel
 import com.altaf.storyblog.domain.model.Category
 import com.altaf.storyblog.domain.model.HomeData
+import com.altaf.storyblog.domain.model.Story
 import com.altaf.storyblog.domain.model.networkModel.NetworkResult
 import com.altaf.storyblog.domain.usecase.home.GetHomeDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,8 +55,8 @@ class HomeViewModel @Inject constructor(
         _uiEvent.value = HomeEvent.NavigateToCategoryWiseStory(category)
     }
 
-    fun onStoryClicked() {
-        _uiEvent.value = HomeEvent.NavigateToSingleStory
+    fun onStoryClicked(story: Story) {
+        _uiEvent.value = HomeEvent.NavigateToSingleStory(story)
     }
 
     fun onSeeAllStoriesClicked() {

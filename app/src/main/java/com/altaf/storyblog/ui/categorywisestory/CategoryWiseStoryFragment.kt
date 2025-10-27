@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.altaf.storyblog.R
 import com.altaf.storyblog.common.base.BaseFragment
 import com.altaf.storyblog.databinding.FragmentCategoryWiseStoryBinding
+import com.altaf.storyblog.domain.model.Story
 import com.altaf.storyblog.ui.adapter.StoryLoadStateAdapter
 import com.altaf.storyblog.ui.adapter.StoryPagingAdapter
+import com.altaf.storyblog.ui.categorywisestory.viewmodel.CategoryWiseStoryEvent
 import com.altaf.storyblog.ui.categorywisestory.viewmodel.CategoryWiseStoryViewModel
 import com.altaf.storyblog.ui.main.viewmodel.MainViewModel
 import com.altaf.storyblog.ui.story.viewmodel.StoryEvent
@@ -57,18 +59,23 @@ class CategoryWiseStoryFragment : BaseFragment<CategoryWiseStoryViewModel, Fragm
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiEvent.collect { event ->
                 when (event) {
-                    is StoryEvent.NavigateToSingleStory -> navigateToSingleStory()
+                    is CategoryWiseStoryEvent.NavigateToSingleStory -> navigateToSingleStory(event.story)
                     else -> {}
                 }
             }
         }
     }
 
-    private fun navigateToSingleStory() {
-        // Navigate to category wise story with proper back stack handling
+    private fun navigateToSingleStory(story: Story) {
+        // Create bundle with story data
+        val bundle = Bundle().apply {
+            putParcelable("story", story)
+        }
+        
+        // Navigate to single story with story data
         findNavController().navigate(
             R.id.singleStoryFragment,
-            null,
+            bundle,
             NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
@@ -93,11 +100,11 @@ class CategoryWiseStoryFragment : BaseFragment<CategoryWiseStoryViewModel, Fragm
 
         // Handle story item clicks
         storyAdapter.onItemClick = { story ->
-            viewModel.onStoryClicked()
+            viewModel.onStoryClicked(story)
         }
 
         storyAdapter.onReadMoreClick = { story ->
-            viewModel.onStoryClicked()
+            viewModel.onStoryClicked(story)
         }
 
         // Observe load state for showing loading and error states

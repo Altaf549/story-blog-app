@@ -13,6 +13,7 @@ import com.altaf.storyblog.common.extension.gone
 import com.altaf.storyblog.common.extension.visible
 import com.altaf.storyblog.databinding.FragmentHomeBinding
 import com.altaf.storyblog.domain.model.Category
+import com.altaf.storyblog.domain.model.Story
 import com.altaf.storyblog.ui.home.adapter.BannerAdapter
 import com.altaf.storyblog.ui.adapter.CategoryAdapter
 import com.altaf.storyblog.ui.adapter.StoryAdapter
@@ -59,7 +60,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 when (event) {
                     is HomeEvent.NavigateToCategoryWiseStory -> navigateToCategoryWiseStory(category = event.category)
                     is HomeEvent.NavigateToCategory -> navigateToCategory()
-                    is HomeEvent.NavigateToSingleStory -> navigateToSingleStory()
+                    is HomeEvent.NavigateToSingleStory -> navigateToSingleStory(event.story)
                     is HomeEvent.NavigateToStory -> navigateToStory()
                     else -> {}
                 }
@@ -119,11 +120,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         )
     }
 
-    private fun navigateToSingleStory() {
+    private fun navigateToSingleStory(story: Story) {
+        // Create bundle with story data
+        val bundle = Bundle().apply {
+            putParcelable("story", story)
+        }
         // Navigate to category wise story with proper back stack handling
         findNavController().navigate(
             R.id.singleStoryFragment,
-            null,
+            bundle,
             NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
@@ -182,11 +187,11 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
         // Handle story item clicks
         storyAdapter.onItemClick = { story ->
-            viewModel.onStoryClicked()
+            viewModel.onStoryClicked(story)
         }
 
         storyAdapter.onReadMoreClick = { story ->
-            viewModel.onStoryClicked()
+            viewModel.onStoryClicked(story)
         }
     }
 

@@ -1,5 +1,6 @@
 package com.altaf.storyblog.ui.main
 
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.altaf.storyblog.R
@@ -9,6 +10,8 @@ import com.altaf.storyblog.common.extension.visible
 import com.altaf.storyblog.databinding.ActivityMainBinding
 import com.altaf.storyblog.ui.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
@@ -29,10 +32,22 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             val navController = navHostFragment?.navController ?: return@post
             binding.bottomNav.setupWithNavController(navController)
             navController.addOnDestinationChangedListener { _, destination, _ ->
-                binding.toolbar.toolbarTitle.text = destination.label
                 when (destination.id) {
-                    R.id.homeFragment, R.id.categoryFragment, R.id.storyFragment, R.id.settingFragment, R.id.profileFragment-> binding.bottomNav.visible()
-                    R.id.categoryWiseStoryFragment, R.id.singleStoryFragment -> binding.bottomNav.gone()
+                    R.id.homeFragment, R.id.categoryFragment, R.id.storyFragment, R.id.settingFragment, R.id.profileFragment-> {
+                        binding.toolbar.toolbarTitle.text = destination.label
+                        binding.bottomNav.visible()
+                    }
+                    R.id.categoryWiseStoryFragment -> {
+                        lifecycleScope.launch {
+                            delay(500)
+                            binding.toolbar.toolbarTitle.text = viewModel.categoryName.value
+                        }
+                        binding.bottomNav.gone()
+                    }
+                    R.id.singleStoryFragment ->  {
+                        binding.toolbar.toolbarTitle.text = destination.label
+                        binding.bottomNav.gone()
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.altaf.storyblog.ui.categorywisestory
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import com.altaf.storyblog.databinding.FragmentCategoryWiseStoryBinding
 import com.altaf.storyblog.ui.adapter.StoryLoadStateAdapter
 import com.altaf.storyblog.ui.adapter.StoryPagingAdapter
 import com.altaf.storyblog.ui.categorywisestory.viewmodel.CategoryWiseStoryViewModel
+import com.altaf.storyblog.ui.main.viewmodel.MainViewModel
 import com.altaf.storyblog.ui.story.viewmodel.StoryEvent
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +28,7 @@ class CategoryWiseStoryFragment : BaseFragment<CategoryWiseStoryViewModel, Fragm
     private var categoryId: Long = -1
     private var categoryName: String = ""
     private var categorySlug: String = ""
+    private val activityViewModel by activityViewModels<MainViewModel>()
 
     override fun getViewModelClass(): Class<CategoryWiseStoryViewModel> = CategoryWiseStoryViewModel::class.java
 
@@ -42,6 +45,7 @@ class CategoryWiseStoryFragment : BaseFragment<CategoryWiseStoryViewModel, Fragm
             categoryId = args.getLong("category_id", -1)
             categoryName = args.getString("category_name", "")
             categorySlug = args.getString("category_slug", "")
+            activityViewModel.categoryName.value = categoryName
             viewModel.setStoriesByCategory(categorySlug)
         }
         setupStories()

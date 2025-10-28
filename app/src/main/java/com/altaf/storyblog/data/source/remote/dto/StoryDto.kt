@@ -16,11 +16,11 @@ data class StoryDto(
     @SerializedName("content")
     val content: String,
     
-    @SerializedName("banner_image")
-    val bannerImage: String,
+    @SerializedName("image_id")
+    val imageId: String,
     
-    @SerializedName("banner_image_url")
-    val bannerImageUrl: String,
+    @SerializedName("youtube_url")
+    val youtubeUrl: String,
     
     @SerializedName("user")
     val user: UserDto,
@@ -39,7 +39,8 @@ data class StoryDto(
             id = id,
             title = title,
             content = content,
-            bannerImageUrl = BuildConfig.IMAGE_URL + bannerImageUrl,
+            bannerImageUrl = BuildConfig.IMAGE_URL + imageId,
+            youtubeUrl = youtubeUrl,
             user = user.toUser(),
             category = category.toCategory(),
             createdAt = dateFormat.parse(createdAt) ?: Date()

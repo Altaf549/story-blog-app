@@ -11,11 +11,8 @@ data class BannerDto(
     @SerializedName("title")
     val title: String,
     
-    @SerializedName("image_path")
-    val imagePath: String,
-    
-    @SerializedName("image_url")
-    val imageUrl: String,
+    @SerializedName("image_id")
+    val imageId: String,
     
     @SerializedName("link_url")
     val linkUrl: String,
@@ -27,7 +24,7 @@ data class BannerDto(
         return Banner(
             id = id,
             title = title,
-            imageUrl = BuildConfig.IMAGE_URL + imageUrl,
+            imageUrl = BuildConfig.IMAGE_URL + imageId,
             linkUrl = linkUrl,
             position = position
         )

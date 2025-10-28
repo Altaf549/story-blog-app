@@ -10,6 +10,7 @@ data class Story(
     val title: String = "",
     val content: String = "",
     val bannerImageUrl: String = "",
+    val youtubeUrl: String = "",
     val user: User = User(),
     val category: Category = Category(),
     val createdAt: Date = Date()

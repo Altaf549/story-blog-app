@@ -17,11 +17,8 @@ data class CategoryDto(
     @SerializedName("description")
     val description: String?,
     
-    @SerializedName("image")
-    val image: String?,
-    
-    @SerializedName("image_url")
-    val imageUrl: String?
+    @SerializedName("image_id")
+    val imageId: String?,
 ) {
     fun toCategory(): Category {
         return Category(
@@ -29,7 +26,7 @@ data class CategoryDto(
             name = name,
             slug = slug,
             description = description ?: "",
-            imageUrl = (BuildConfig.IMAGE_URL + imageUrl)
+            imageUrl = (BuildConfig.IMAGE_URL + imageId)
         )
     }
 }
